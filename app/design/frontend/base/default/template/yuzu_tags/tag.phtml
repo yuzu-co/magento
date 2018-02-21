@@ -1,0 +1,13 @@
+<?php if($this->isEnabled()): ?>
+    <script language=javascript>
+        (function (w,d,n,u) {
+            if(typeof yuzu === "undefined") {
+                w[n] = w[n] || function () {(w[n].q = w[n].q || []).push(arguments)};
+            }
+            var a=d.createElement("script");
+            a.type="text/javascript",a.async=1,a.src=u;
+            var b=d.getElementsByTagName("script")[0];
+            b.parentNode.insertBefore(a,b)
+        })(window,document,'yuzu','<?php echo Mage::helper('yuzu_tags')->getConfig('yuzu_tags/general/tag_url_js'); ?>');
+    </script>
+<?php endif; ?>

@@ -1,0 +1,4 @@
+app/code/community/Yuzu									app/code/community/Yuzu
+app/design/frontend/base/default/layout/*				app/design/frontend/base/default/layout/
+app/design/frontend/base/default/template/yuzu_tags/*	app/design/frontend/base/default/template/yuzu_tags
+app/etc/modules/Yuzu_Tags.xml							app/etc/modules/Yuzu_Tags.xml

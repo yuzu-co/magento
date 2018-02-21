@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<package>
+    <name>Yuzu_Tags</name>
+    <version>0.0.4</version>
+    <stability>stable</stability>
+    <license uri="http://opensource.org/licenses/osl-3.0.php">OSL v3.0</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>Yuzu tag management solution</summary>
+    <description>Yuzu tag management solution extension injects the Yuzu javascript into your magento pages, and on specific pages injects special javascript so that you can access specific data elements such as product, category or cart data.</description>
+    <notes>0.0.4 - Update events&#xD;</notes>
+    <authors><author><name>Yuzu</name><user>Yuzu</user><email>hello@yuzu.co</email></author></authors>
+    <date>2014-12-09</date>
+    <time>16:00:00</time>
+    <contents>
+    	<target name="magelocal">
+    		<dir name="Yuzu">
+    			<dir name="Tags">
+    				<dir name="Helper">
+    					<file name="Data.php" hash="bfeaea2594252a11497511272c6f53b4"/>
+    				</dir>
+    				<dir name="etc">
+    					<file name="adminhtml.xml" hash="e6ec5ba973cdb97a9925f02575392865"/>
+    					<file name="config.xml" hash="c736b55d5e3cc05cbf7bc27fe7a851e5"/>
+    					<file name="system.xml" hash="bdf256ea75eb731ddb19d77e748f59d1"/>
+    				</dir>
+                    <dir name="Block">
+                        <file name="Abstract.php" hash="e6ec5ba973cdb97a9925f02575392865"/>
+                        <file name="Checkout.php" hash="e6ec5ba973cdb97a9925f02575392865"/>
+                        <file name="Tags.php" hash="e6ec5ba973cdb97a9925f02575392865"/>
+                        <file name="Email.php" hash="e6ec5ba973cdb97a9925f02575392865"/>
+                        <dir name="Adminhtml">
+                            <dir name="System">
+                                <dir name="Config">
+                                    <file name="Test.php" hash="e6ec5ba973cdb97a9925f02575392865"/>
+                                </dir>
+                            </dir>
+                        </dir>
+                    </dir>
+                    <dir name="controllers">
+                        <dir name="Adminhtml">
+                            <dir name="Yuzu">
+                                <file name="AjaxController.php" hash="e6ec5ba973cdb97a9925f02575392865"/>
+                            </dir>
+                        </dir>
+                    </dir>
+    				<dir name="Model">
+    					<dir name="Resource">
+    						<file name="Setup.php" hash="e6ec5ba973cdb97a9925f02575392866"/>
+    					</dir>
+                        <dir name="System">
+                            <dir name="Config">
+                                <dir name="Source">
+                                    <file name="Nb.php" hash="e6ec5ba973cdb97a9925f02575392866"/>
+                                </dir>
+                            </dir>
+                        </dir>
+                        <file name="Data.php"/>
+                        <file name="Event.php"/>
+    				</dir>
+    				<dir name="sql">
+    					<dir name="yuzu_tags_setup">
+    						<file name="mysql4-install-0.0.4.php" hash="e6ec5ba973cdb97a9925f02575392867"/>
+    						<file name="mysql4_config.php" hash="e6ec5ba973cdb97a9925f02575392868"/>
+    					</dir>
+    				</dir>    				
+    			</dir>
+    		</dir>
+    	</target>
+    	<target name="mageetc">
+            <dir name="modules">
+                <file name="Yuzu_Tags.xml" hash="3d6843433dffefb4600573950a83e765"/>
+            </dir>
+        </target>
+        <target name="magedesign">
+            <dir name="frontend">
+                <dir name="base">
+                    <dir name="default">
+                        <dir name="layout">
+                            <file name="yuzu_tags.xml" hash="f1a764ba60627bbf4b0113c454bb892a"/>
+                        </dir>
+                        <dir name="template">
+                            <dir name="yuzu_tags">
+                                <file name="async_tag.phtml" hash="d645769fa5a71195baba96bdd68ad979"/>
+                                <file name="event.phtml" hash="810cb1cf8b17ab77d5addf75097dcc12"/>
+                                <file name="init.phtml" hash="df8e2d21436261f855dcb4bb1d6497fb"/>
+                                <file name="iframewrap.phtml" hash="df8e2d21436261f855dcb4bb1d6497fb"/>
+                                <file name="post_purchase.phtml" hash="df8e2d21436261f855dcb4bb1d6497fb"/>
+                                <dir name="email">
+                                    <file name="offers.phtml" hash="df8e2d21436261f855dcb4bb1d6497fb"/>
+                                    <dir name="invoice">
+                                        <file name="items.phtml" hash="df8e2d21436261f855dcb4bb1d6497fb"/>
+                                    </dir>
+                                    <dir name="order">
+                                        <file name="items.phtml" hash="df8e2d21436261f855dcb4bb1d6497fb"/>
+                                    </dir>
+                                    <dir name="shipment">
+                                        <file name="items.phtml" hash="df8e2d21436261f855dcb4bb1d6497fb"/>
+                                    </dir>
+                                </dir>
+                            </dir>
+                        </dir>
+                    </dir>
+                </dir>
+            </dir>
+        </target>
+    </contents>
+    <compatible/>
+    <dependencies><required><php><min>5.2.0</min><max>7.0.0</max></php></required></dependencies>
+</package>

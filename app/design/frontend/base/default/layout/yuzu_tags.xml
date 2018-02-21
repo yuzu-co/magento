@@ -1,0 +1,16 @@
+<layout version="0.1.0">
+
+    <default>
+        <reference name="head">
+            <block type="yuzu_tags/tags" name="yuzu_tag"  template="yuzu_tags/tag.phtml"/>
+        </reference>
+    </default>
+
+    <checkout_onepage_success>
+        <block type="yuzu_tags/checkout" name="yuzu_wrap" template="yuzu_tags/checkout.phtml"/>
+        <reference name="content">
+            <action method="append"><block>yuzu_wrap</block></action>
+        </reference>
+    </checkout_onepage_success>
+	
+</layout>

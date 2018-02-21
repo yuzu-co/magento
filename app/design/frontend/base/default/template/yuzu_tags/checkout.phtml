@@ -1,0 +1,44 @@
+<?php if ($this->isEnabled()): ?>
+    <?php $event = $this->getEvent(); ?>
+
+	<?php if ($event): ?>
+        <script language=javascript>
+            (function (w,d,n) {
+                if(typeof yuzu === "undefined") {
+                    w[n] = w[n] || function () {(w[n].q = w[n].q || []).push(arguments)};
+                }
+            })(window,document,'yuzu');
+
+            yuzu('order.id', '<?php echo $event['id']; ?>');
+            yuzu('order.coupon', '<?php echo $event['coupon']; ?>');
+            yuzu('order.total', '<?php echo $event['total']; ?>');
+            yuzu('order.subtotal', '<?php echo $event['subtotal']; ?>');
+            yuzu('order.discount', '<?php echo $event['discount']; ?>');
+            yuzu('order.currency', '<?php echo $event['currency']; ?>');
+            yuzu('order.tax', '<?php echo $event['tax']; ?>');
+            yuzu('order.shippingAmount', '<?php echo $event['shipping']; ?>');
+            yuzu('order.status', '<?php echo $event['status']; ?>');
+            yuzu('order.statusCode', '<?php echo $event['status_code']; ?>');
+            yuzu('cid', '<?php echo $event['customer']['id']; ?>');
+            yuzu('email', '<?php echo $event['customer']['email']; ?>');
+            yuzu('customer.email', '<?php echo $event['customer']['email']; ?>');
+            yuzu('customer.firstname', '<?php echo $event['customer']['firstname']; ?>');
+            yuzu('customer.lastname', '<?php echo $event['customer']['lastname']; ?>');
+            yuzu('customer.birthday', '<?php echo $event['customer']['birthday']; ?>');
+
+            yuzu('customer.billing.zipcode', '<?php echo $event['customer']['addresses']['billing']['postalCode']; ?>');
+            yuzu('customer.billing.country', '<?php echo $event['customer']['addresses']['billing']['country']; ?>');
+            yuzu('customer.billing.street', '<?php echo implode(' ', $event['customer']['addresses']['billing']['street']); ?>');
+            yuzu('customer.shipping.zipcode', '<?php echo $event['customer']['addresses']['shipping']['postalCode']; ?>');
+            yuzu('customer.shipping.country', '<?php echo $event['customer']['addresses']['shipping']['country']; ?>');
+            yuzu('customer.shipping.street', '<?php echo implode(' ', $event['customer']['addresses']['shipping']['street']); ?>');
+
+            <?php foreach($event['lines'] as $line): ?>
+                yuzu('cart.addItem', {'id': '<?php echo $line['productId']; ?>', 'qty': '<?php echo $line['quantity']; ?>', 'price': '<?php echo $line['price']; ?>', 'discount': '<?php echo $line['discount']; ?>'});
+            <?php endforeach; ?>
+
+            yuzu('send', 'order');
+        </script>
+    <?php endif; ?>
+
+<?php endif; ?>

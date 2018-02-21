@@ -1,0 +1,19 @@
+{
+    "name": "yuzu-co/magento",
+    "description": "Official Magento Plugin to connect to Yuzu.",
+    "type": "magento-module",
+    "homepage": "https://github.com/yuzu-co/magento",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tech Team",
+            "email": "tech@yuzu.co"
+        }
+    ],
+    "replace": {
+        "connect20/yuzu": "1.*"
+    },
+    "require": {
+        "php": ">=5.6.0"
+    }
+}

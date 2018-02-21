@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Yuzu_Tags>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Yuzu_Tags>
+    </modules>
+</config>
