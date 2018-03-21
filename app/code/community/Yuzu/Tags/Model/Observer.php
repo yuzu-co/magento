@@ -28,7 +28,7 @@ class Yuzu_Tags_Model_Observer
     private function sendPing()
     {
         try {
-            $client = new Varien_Http_Client('URL_WEBHOOK_PLUGIN');
+            $client = new Varien_Http_Client('https://connector.yuzu-together.com/webhooks/plugin');
             $client->setMethod(Varien_Http_Client::POST);
             $client->setParameterPost('host', Mage::getBaseUrl());
             $client->setParameterPost('status', 'installed');

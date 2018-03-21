@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Yuzu_Tags>
-            <version>2.0.4</version>
+            <version>2.0.5</version>
         </Yuzu_Tags>
     </modules>
 
@@ -66,7 +66,7 @@
     <default>
 	    <yuzu_tags>
 	        <general>
-                <tag_url_js>URL_TAG_JS_YUZU</tag_url_js>
+                <tag_url_js>//static.yuzu-together.com/yuzu.js</tag_url_js>
                 <enable>0</enable>
 	        </general>
 	    </yuzu_tags>

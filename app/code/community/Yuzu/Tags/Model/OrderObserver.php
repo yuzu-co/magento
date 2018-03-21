@@ -21,7 +21,7 @@ class Yuzu_Tags_Model_OrderObserver
             if ($order->getStatus() !== $order->getOrigData('status')) {
                 $apiKey = Mage::helper('yuzu_tags')->getConfig('yuzu_tags/general/api_key');
 
-                $client = new Zend_Http_Client('URL_SALES_STATUS');
+                $client = new Zend_Http_Client('https://connector.yuzu-together.com/sales/status');
                 $client->setMethod(Zend_Http_Client::PUT);
                 $client->setHeaders(
                     array(
