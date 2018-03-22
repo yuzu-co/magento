@@ -60,6 +60,11 @@ class Yuzu_Tags_Block_Checkout extends Yuzu_Tags_Block_Abstract
                 }
                 $event['lines'] = $yuItems;
 
+                if ($order->getCustomerId()) {
+                    $customerData = Mage::getModel('customer/customer')->load($order->getCustomerId())->getData();
+                    $subscriber = Mage::getModel('newsletter/subscriber')->loadByEmail($customerData['email']);
+                    $optin = $subscriber->getId() ? true : false;
+                }
                 //Customer data
                 $yuCustomer = array(
                     'id' => ($order->getCustomerId()) ? $order->getCustomerId() : '0',
@@ -68,7 +73,9 @@ class Yuzu_Tags_Block_Checkout extends Yuzu_Tags_Block_Abstract
                     'email' => $order->getCustomerEmail(),
                     'gender' => $this->getGender($order->getCustomerGender()),
                     'birthday' => $order->getCustomerDob(),
-                    'addresses' => array()
+                    'group' => isset($customerData) ? $customerData['group_id'] : null,
+                    'addresses' => array(),
+                    'optin' => isset($optin) ? $optin : false
                 );
 
                 //Shipping Address

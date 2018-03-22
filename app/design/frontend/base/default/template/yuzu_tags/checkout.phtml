@@ -25,6 +25,8 @@
             yuzu('customer.firstname', '<?php echo $event['customer']['firstname']; ?>');
             yuzu('customer.lastname', '<?php echo $event['customer']['lastname']; ?>');
             yuzu('customer.birthday', '<?php echo $event['customer']['birthday']; ?>');
+            yuzu('customer.defaultGroup', '<?php echo $event['customer']['group']; ?>');
+            yuzu('customer.optin', '<?php echo $event['customer']['optin']; ?>');
 
             yuzu('customer.billing.zipcode', '<?php echo $event['customer']['addresses']['billing']['postalCode']; ?>');
             yuzu('customer.billing.country', '<?php echo $event['customer']['addresses']['billing']['country']; ?>');

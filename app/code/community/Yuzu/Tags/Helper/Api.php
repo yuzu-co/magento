@@ -45,6 +45,40 @@ class Yuzu_Tags_Helper_Api extends Mage_Core_Helper_Abstract
         return base64_decode($data);
     }
 
+    public function getCustomers()
+    {
+        $query = json_decode($this->getPostData()['query'], true);
+
+        $page = (int) $query['page'];
+        $limit = (int) $query['limit'];
+
+        /** @var Mage_Sales_Model_Resource_Order_Collection $q */
+        $q = Mage::getModel('customer/customer')->getCollection()
+            ->addAttributeToSort('created_at', 'asc')
+            ->setCurPage($page)
+            ->setPageSize($limit);
+
+        if (!empty($query['date_from']) && !empty($query['date_to'])) {
+            $q = $q->addAttributeToFilter('created_at', ['from' => $query['date_from'], 'to' => $query['date_to']]);
+        } elseif (!empty($query['date_from'])) {
+            $q = $q->addAttributeToFilter('created_at', ['from' => $query['date_from']]);
+        } elseif (!empty($query['date_to'])) {
+            $q = $q->addAttributeToFilter('created_at', ['to' => $query['date_from']]);
+        }
+
+        if (!empty($this->message['id_shop'])) {
+            $q = $q->addAttributeToFilter('store_id', $this->message['id_shop']);
+        }
+
+        $this->signResponse();
+
+        if ($page > $q->getLastPageNumber()) {
+            return null;
+        }
+
+        return $q;
+    }
+
     public function getOrders()
     {
         $query = json_decode($this->getPostData()['query'], true);
@@ -59,11 +93,11 @@ class Yuzu_Tags_Helper_Api extends Mage_Core_Helper_Abstract
             ->setPageSize($limit);
 
         if (!empty($query['date_from']) && !empty($query['date_to'])) {
-            $q = $q->addAttributeToFilter('created_at', ['from' => $query['date_from'], 'to' => $query['date_to']]);
+            $q = $q->addAttributeToFilter('updated_at', ['from' => $query['date_from'], 'to' => $query['date_to']]);
         } elseif (!empty($query['date_from'])) {
-            $q = $q->addAttributeToFilter('created_at', ['from' => $query['date_from']]);
+            $q = $q->addAttributeToFilter('updated_at', ['from' => $query['date_from']]);
         } elseif (!empty($query['date_to'])) {
-            $q = $q->addAttributeToFilter('created_at', ['to' => $query['date_from']]);
+            $q = $q->addAttributeToFilter('updated_at', ['to' => $query['date_from']]);
         }
 
         if (!empty($this->message['id_shop'])) {
@@ -96,9 +130,55 @@ class Yuzu_Tags_Helper_Api extends Mage_Core_Helper_Abstract
         return $q->getFirstItem()->getId() ? $q->getFirstItem() : null;
     }
 
+    public function formatCustomer(Mage_Customer_Model_Customer $customer)
+    {
+        $customerData = Mage::getModel('customer/customer')->load($customer->getId())->getData();
+        $address = Mage::getModel('customer/address')->load($customerData['default_billing'])->getData();
+        $subscriber = Mage::getModel('newsletter/subscriber')->loadByEmail($customerData['email']);
+        $optin = $subscriber->getId() ? true : false;
+
+        $res = array(
+            'id_customer' => $customer->getId(),
+            'id_gender' => $customerData['gender'],
+            'group_id' => $customerData['group_id'],
+            'lastname' => $customerData['lastname'],
+            'firstname' => $customerData['firstname'],
+            'dob' => $customerData['dob'],
+            'email' => $customerData['email'],
+            'taxvat' => $customerData['taxvat'],
+//            'newsletter' => $customer->newsletter,
+            'optin' => $optin,
+            'active' => $customerData['is_active'],
+//            'is_guest' => $customer->is_guest,
+            'created_at' => $customerData['created_at'],
+            'updated_at' => $customerData['updated_at'],
+            'id_store' => $customerData['store_id'],
+        );
+
+        if ($address) {
+            $res['address'] = array(
+                'id' => $address['entity_id'],
+                'firstname' => $address['firstname'],
+                'lastname' => $address['lastname'],
+                'company' => $address['company'],
+                'address' => $address['street'],
+                'city' => $address['city'],
+                'postcode' => $address['postcode'],
+                'country' => $address['country_id'],
+                'phone' => $address['telephone'],
+//                'phone_mobile' => $address->phone_mobile,
+            );
+        }
+
+        return $res;
+    }
+
     public function formatOrder(Mage_Sales_Model_Order $order)
     {
         $customer = Mage::getModel('customer/customer')->load($order->getCustomerId())->getData();
+
+        $subscriber = Mage::getModel('newsletter/subscriber')->loadByEmail($order->getCustomerEmail());
+        $optin = $subscriber->getId() ? true : false;
 
         $products = array();
         /** @var Mage_Sales_Model_Order_Item $product */
@@ -141,6 +221,7 @@ class Yuzu_Tags_Helper_Api extends Mage_Core_Helper_Abstract
                 'lastname' => $order->getCustomerLastname(),
                 'email' => $order->getCustomerEmail(),
                 'dob' => $customer['dob'],
+                'optin' =>  $optin,
 //                    'phone' => 'phone',
                 'group_id' => $order->getCustomerGroupId(),
                 'gender' => $customer['gender'],

@@ -24,6 +24,9 @@ class Yuzu_Tags_ApiController extends Mage_Core_Controller_Front_Action
         $res = '';
         $action = json_decode($this->api->getPostData()['query'], true)['action'];
         switch ($action) {
+            case 'getCustomers':
+                $res = $this->getCustomers();
+                break;
             case 'getOrders':
                 $res = $this->getOrders();
                 break;
@@ -172,6 +175,21 @@ class Yuzu_Tags_ApiController extends Mage_Core_Controller_Front_Action
 
             return $res;
         }
+    }
+
+    private function getCustomers()
+    {
+        $res = array();
+        $results = $this->api->getCustomers();
+
+        $customers = array();
+        foreach ($results as $customer) {
+            $customers[] = $this->api->formatCustomer($customer);
+        }
+
+        $res['message']['customers']  = $customers;
+
+        return $res;
     }
 
     private function getOrders()
