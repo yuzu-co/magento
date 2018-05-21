@@ -130,6 +130,22 @@ class Yuzu_Tags_Helper_Api extends Mage_Core_Helper_Abstract
         return $q->getFirstItem()->getId() ? $q->getFirstItem() : null;
     }
 
+    public function getOrderByCart()
+    {
+        $query = json_decode($this->getPostData()['query'], true);
+
+        $q = Mage::getModel('sales/order')->getCollection()
+            ->addAttributeToFilter('quote_id', $query['id_cart']);
+
+        if (!empty($this->message['id_shop'])) {
+            $q = $q->addAttributeToFilter('store_id', $this->message['id_shop']);
+        }
+
+        $this->signResponse();
+
+        return $q->getFirstItem()->getId() ? $q->getFirstItem() : null;
+    }
+
     public function formatCustomer(Mage_Customer_Model_Customer $customer)
     {
         $customerData = Mage::getModel('customer/customer')->load($customer->getId())->getData();
@@ -153,6 +169,7 @@ class Yuzu_Tags_Helper_Api extends Mage_Core_Helper_Abstract
             'created_at' => $customerData['created_at'],
             'updated_at' => $customerData['updated_at'],
             'id_store' => $customerData['store_id'],
+            'phone' => $address ? $address['telephone'] : null,
         );
 
         if ($address) {
@@ -192,9 +209,13 @@ class Yuzu_Tags_Helper_Api extends Mage_Core_Helper_Abstract
             );
         }
 
+        $billingAddress = $order->getBillingAddress();
+        $shippingAddress = $order->getShippingAddress();
+
         $formatedOrder = array(
             'order' => array(
                 'id_order' => $order->getIncrementId(),
+                'cart_id' => $order->getQuoteId(),
                 'created_at' => $order->getCreatedAt(),
                 'updated_at' => $order->getUpdatedAt(),
                 'status' => $order->getStatusLabel(),
@@ -222,17 +243,14 @@ class Yuzu_Tags_Helper_Api extends Mage_Core_Helper_Abstract
                 'email' => $order->getCustomerEmail(),
                 'dob' => $customer['dob'],
                 'optin' =>  $optin,
-//                    'phone' => 'phone',
                 'group_id' => $order->getCustomerGroupId(),
                 'gender' => $customer['gender'],
                 'taxvat' => $customer['taxvat'],
                 'is_guest' => $order->getCustomerIsGuest(),
+                'phone' => $billingAddress->getTelephone(),
             ),
             'products' => $products,
         );
-
-        $billingAddress = $order->getBillingAddress();
-        $shippingAddress = $order->getShippingAddress();
 
         if ($billingAddress) {
             $formatedOrder['billing_address'] = array(

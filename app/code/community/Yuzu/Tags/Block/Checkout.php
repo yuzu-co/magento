@@ -29,6 +29,7 @@ class Yuzu_Tags_Block_Checkout extends Yuzu_Tags_Block_Abstract
                     'total'       => number_format($order->getGrandTotal(), 2, ".", ""),
                     'currency'    => $order->getOrderCurrencyCode(),
                     'coupon'    => $order->getCouponCode(),
+                    'cartId'    => $order->getQuoteId(),
                     'status' => $order->getStatusLabel(),
                     'status_code' => $order->getStatus()
                 );
@@ -66,6 +67,7 @@ class Yuzu_Tags_Block_Checkout extends Yuzu_Tags_Block_Abstract
                     $optin = $subscriber->getId() ? true : false;
                 }
                 //Customer data
+                $billingAddress = Mage::getModel('sales/order_address')->load($order->getBillingAddressId());
                 $yuCustomer = array(
                     'id' => ($order->getCustomerId()) ? $order->getCustomerId() : '0',
                     'lastname' => $order->getCustomerLastname(),
@@ -75,7 +77,8 @@ class Yuzu_Tags_Block_Checkout extends Yuzu_Tags_Block_Abstract
                     'birthday' => $order->getCustomerDob(),
                     'group' => isset($customerData) ? $customerData['group_id'] : null,
                     'addresses' => array(),
-                    'optin' => isset($optin) ? $optin : false
+                    'optin' => isset($optin) ? $optin : false,
+                    'phone' => $billingAddress->getTelephone()
                 );
 
                 //Shipping Address
@@ -93,7 +96,6 @@ class Yuzu_Tags_Block_Checkout extends Yuzu_Tags_Block_Abstract
                 $yuCustomer['addresses']['shipping'] = $shipping;
 
                 //Billing Address
-                $billingAddress = Mage::getModel('sales/order_address')->load($order->getBillingAddressId());
                 $billing = array();
                 $billing['street'][] = $billingAddress->getStreet1();
                 if ($billingAddress->getStreet2()) {

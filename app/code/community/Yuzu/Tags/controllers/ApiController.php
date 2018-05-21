@@ -75,6 +75,9 @@ class Yuzu_Tags_ApiController extends Mage_Core_Controller_Front_Action
             case 'getCustomerGroups':
                 $res = $this->getCustomerGroups();
                 break;
+            case 'getOrderByCart':
+                $res = $this->getOrderByCart();
+                break;
             default:
                 break;
         }
@@ -382,6 +385,18 @@ class Yuzu_Tags_ApiController extends Mage_Core_Controller_Front_Action
         }
 
         $res['message']['customerGroups']  = $customerGroups;
+
+        return $res;
+    }
+
+    private function getOrderByCart()
+    {   
+        $res = array();
+        $order = $this->api->getOrderByCart();
+
+        if ($order) {
+            $res['message'] = $this->api->formatOrder($order);
+        }
 
         return $res;
     }

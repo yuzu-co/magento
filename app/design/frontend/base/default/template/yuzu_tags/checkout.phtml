@@ -10,6 +10,7 @@
             })(window,document,'yuzu');
 
             yuzu('order.id', '<?php echo $event['id']; ?>');
+            yuzu('order.cartId', '<?php echo $event['cartId']; ?>');
             yuzu('order.coupon', '<?php echo $event['coupon']; ?>');
             yuzu('order.total', '<?php echo $event['total']; ?>');
             yuzu('order.subtotal', '<?php echo $event['subtotal']; ?>');
@@ -27,6 +28,7 @@
             yuzu('customer.birthday', '<?php echo $event['customer']['birthday']; ?>');
             yuzu('customer.defaultGroup', '<?php echo $event['customer']['group']; ?>');
             yuzu('customer.optin', '<?php echo $event['customer']['optin']; ?>');
+            yuzu('customer.mobile_phone', '<?php echo $event['customer']['phone']; ?>');
 
             yuzu('customer.billing.zipcode', '<?php echo $event['customer']['addresses']['billing']['postalCode']; ?>');
             yuzu('customer.billing.country', '<?php echo $event['customer']['addresses']['billing']['country']; ?>');
